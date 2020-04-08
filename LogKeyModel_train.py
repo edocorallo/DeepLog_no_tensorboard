@@ -54,6 +54,7 @@ if __name__ == '__main__':
     model_dir = 'model'
     log = 'Adam_batch_size={}_epoch={}'.format(str(batch_size), str(num_epochs))
     parser = argparse.ArgumentParser()
+    parser.add_argument('log_file',type=str)
     parser.add_argument('-num_layers', default=2, type=int)
     parser.add_argument('-hidden_size', default=64, type=int)
     parser.add_argument('-window_size', default=10, type=int)
@@ -61,9 +62,10 @@ if __name__ == '__main__':
     num_layers = args.num_layers
     hidden_size = args.hidden_size
     window_size = args.window_size
+    log_file=args.log_file
 
     model = Model(input_size, hidden_size, num_layers, num_classes).to(device)
-    seq_dataset = generate('hdfs_train')
+    seq_dataset = generate('{}_train'.format(log_file))
     dataloader = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, pin_memory=True)
     #writer = SummaryWriter(log_dir='log/' + log)
 
