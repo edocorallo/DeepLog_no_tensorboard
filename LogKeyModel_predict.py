@@ -43,8 +43,8 @@ if __name__ == '__main__':
     # Hyperparameters
     num_classes = 28
     input_size = 1
-    model_path = 'model/Adam_batch_size=2048_epoch=300.pt'
     parser = argparse.ArgumentParser()
+    parser.add_argument('-log_file',default='hdfs',type=str)
     parser.add_argument('-num_layers', default=2, type=int)
     parser.add_argument('-hidden_size', default=64, type=int)
     parser.add_argument('-window_size', default=10, type=int)
@@ -54,13 +54,15 @@ if __name__ == '__main__':
     hidden_size = args.hidden_size
     window_size = args.window_size
     num_candidates = args.num_candidates
+    log_file=args.log_file
+    model_path = '[{}]model/Adam_batch_size=2048_epoch=300.pt'.format(log_file)
 
     model = Model(input_size, hidden_size, num_layers, num_classes).to(device)
     model.load_state_dict(torch.load(model_path))
     model.eval()
     print('model_path: {}'.format(model_path))
-    test_normal_loader = generate('hdfs_test_normal')
-    test_abnormal_loader = generate('hdfs_test_abnormal')
+    test_normal_loader = generate('{}_test_normal'.format(log_file))
+    test_abnormal_loader = generate('{}_test_abnormal'.format(log_file))
     TP = 0
     FP = 0
     # Test the model
