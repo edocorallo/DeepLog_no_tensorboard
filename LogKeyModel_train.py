@@ -56,6 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('-num_layers', default=2, type=int)
     parser.add_argument('-hidden_size', default=64, type=int)
     parser.add_argument('-window_size', default=10, type=int)
+    parser.add_argument('-num_classes', default=28, type=int)#figuring out a way to automate this choice,which is pretty forced...
     args = parser.parse_args()
     num_layers = args.num_layers
     hidden_size = args.hidden_size
