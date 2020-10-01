@@ -1,4 +1,4 @@
 torch==1.4
-tensorboard==2.0.2
+tensorboard==1.14
 tensorflow==1.14
 tensorflow-estimator==2.3.0
