@@ -7,6 +7,39 @@ from torch.utils.data import TensorDataset, DataLoader
 import argparse
 import os
 
+import importlib
+importlib.import_module('drain3')
+import configparser
+import logging
+import sys
+
+from drain3 import TemplateMiner
+from drain3.file_persistence import FilePersistence
+
+parser = argparse.ArgumentParser()
+group=parser.add_mutually_exclusive_group()
+group.add_argument("-f","--frontend",action="store_true",help="Used if you want to parse a storm-frontend log file.")
+group.add_argument("-b","--backend",action="store_true",help="Used if you want to parse a storm-backend log file.")
+parser.add_argument('-log_file',default='hdfs',type=str)
+parser.add_argument('-num_layers', default=2, type=int)
+parser.add_argument('-hidden_size', default=64, type=int)
+parser.add_argument('-window_size', default=10, type=int)
+args = parser.parse_args()
+if args.frontend:
+        log_type="frontend-server"
+elif args.backend:
+        log_type="backend-server"
+persistence_type = "FILE"
+
+config = configparser.ConfigParser()
+config.read('drain3.ini')
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(message)s')
+
+persistence = FilePersistence("../Drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
+template_miner = TemplateMiner(persistence)
+
 # Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -47,7 +80,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
 
     # Hyperparameters
-    num_classes = 28
+    num_classes = len(template_miner.drain.clusters)
     num_epochs = 300
     batch_size = 2048
     input_size = 1
@@ -56,7 +89,6 @@ if __name__ == '__main__':
     parser.add_argument('-num_layers', default=2, type=int)
     parser.add_argument('-hidden_size', default=64, type=int)
     parser.add_argument('-window_size', default=10, type=int)
-    parser.add_argument('-num_classes', default=28, type=int)#figuring out a way to automate this choice,which is pretty forced...
     args = parser.parse_args()
     num_layers = args.num_layers
     hidden_size = args.hidden_size
