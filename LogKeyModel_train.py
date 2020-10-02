@@ -18,24 +18,20 @@ from drain3.file_persistence import FilePersistence
 
 parser = argparse.ArgumentParser()
 group=parser.add_mutually_exclusive_group()
-group.add_argument("-f","--frontend",action="store_true",help="Used if you want to parse a storm-frontend log file.")
 group.add_argument("-b","--backend",action="store_true",help="Used if you want to parse a storm-backend log file.")
-parser.add_argument('-log_file',default='hdfs',type=str)
+parser.add_argument('-log_file',default='fe',type=str)
 parser.add_argument('-num_layers', default=2, type=int)
 parser.add_argument('-hidden_size', default=64, type=int)
 parser.add_argument('-window_size', default=10, type=int)
 args = parser.parse_args()
-if args.frontend:
-        log_type="frontend-server"
-elif args.backend:
+if args.backend:
         log_type="backend-server"
+else:
+        log_type="frontend-server"
 persistence_type = "FILE"
 
 config = configparser.ConfigParser()
 config.read('drain3.ini')
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(message)s')
 
 persistence = FilePersistence("../Drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
 template_miner = TemplateMiner(persistence)
