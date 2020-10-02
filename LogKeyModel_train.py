@@ -10,15 +10,13 @@ import os
 import importlib
 importlib.import_module('drain3')
 import configparser
-import logging
-import sys
 
 from drain3 import TemplateMiner
 from drain3.file_persistence import FilePersistence
 
 parser = argparse.ArgumentParser()
 group=parser.add_mutually_exclusive_group()
-group.add_argument("-b","--backend",action="store_true",help="Used if you want to parse a storm-backend log file.")
+group.add_argument("-b","--backend",action="store_true",help="Used if you want to train with storm-backend log type.")
 parser.add_argument('-log_file',default='fe',type=str)
 parser.add_argument('-num_layers', default=2, type=int)
 parser.add_argument('-hidden_size', default=64, type=int)
