@@ -78,12 +78,6 @@ if __name__ == '__main__':
     num_epochs = 300
     batch_size = 2048
     input_size = 1
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-log_file',default='hdfs',type=str)
-    parser.add_argument('-num_layers', default=2, type=int)
-    parser.add_argument('-hidden_size', default=64, type=int)
-    parser.add_argument('-window_size', default=10, type=int)
-    args = parser.parse_args()
     num_layers = args.num_layers
     hidden_size = args.hidden_size
     window_size = args.window_size
