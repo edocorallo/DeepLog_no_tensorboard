@@ -1,4 +1,4 @@
-Original repo at https://github.com/wuyifan18/DeepLog, He did all the work.
+Original repo at https://github.com/wuyifan18/DeepLog, She did all the work.
 # DeepLog
 A Pytorch implementation of [DeepLog](https://www.cs.utah.edu/~lifeifei/papers/deeplog.pdf)'s log key anomaly detection model.
 
