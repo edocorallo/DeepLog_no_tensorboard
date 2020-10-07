@@ -28,7 +28,7 @@ persistence_type = "FILE"
 config = configparser.ConfigParser()
 config.read('drain3.ini')
 
-persistence = FilePersistence("../Drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
+persistence = FilePersistence("../drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
 template_miner = TemplateMiner(persistence)
 
 # Device configuration
