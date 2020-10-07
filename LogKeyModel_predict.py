@@ -76,7 +76,7 @@ if __name__ == '__main__':
     window_size = args.window_size
     num_candidates = args.num_candidates
     log_file=args.log_file
-    model_path = '[{}]model/Adam_batch_size=2048_epoch=300.pt'.format(log_file)
+    model_path = 'model/[{}]Adam_batch_size=2048_epoch=300.pt'.format(log_file)
 
     model = Model(input_size, hidden_size, num_layers, num_classes).to(device)
     model.load_state_dict(torch.load(model_path))
