@@ -2,7 +2,7 @@ import time
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.tensorboard import SummaryWriter
+#from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import TensorDataset, DataLoader
 import argparse
 import os
@@ -75,6 +75,7 @@ if __name__ == '__main__':
 
     # Hyperparameters
     num_classes = len(template_miner.drain.clusters)
+    print("num_classes :  ",num_classes)
     num_epochs = 300
     batch_size = 2048
     input_size = 1
@@ -88,7 +89,8 @@ if __name__ == '__main__':
     model = Model(input_size, hidden_size, num_layers, num_classes).to(device)
     seq_dataset = generate('{}_train'.format(log_file))
     dataloader = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, pin_memory=True)
-    writer = SummaryWriter(log_dir='log/' + log)
+    #writer = SummaryWriter(log_dir='log/' + log)
+    writer=open('writer.txt','w')
 
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
@@ -110,9 +112,10 @@ if __name__ == '__main__':
             loss.backward()
             train_loss += loss.item()
             optimizer.step()
-            writer.add_graph(model, seq)
+            #writer.add_graph(model, seq)
         print('Epoch [{}/{}], train_loss: {:.4f}'.format(epoch + 1, num_epochs, train_loss / total_step))
-        writer.add_scalar('train_loss', train_loss / total_step, epoch + 1)
+        #writer.add_scalar('train_loss', train_loss / total_step, epoch + 1)
+        print(train_loss / total_step, file=writer)
     elapsed_time = time.time() - start_time
     print('elapsed_time: {:.3f}s'.format(elapsed_time))
     if not os.path.isdir(model_dir):
