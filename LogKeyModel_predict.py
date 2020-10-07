@@ -19,7 +19,7 @@ parser.add_argument('-window_size', default=10, type=int)
 parser.add_argument('-num_candidates', default=9, type=int)
 parser.add_argument('-log_file',default='fe',type=str)
 args = parser.parse_args()
-elif args.backend:
+if args.backend:
         log_type="backend-server"
 else:
         log_type="frontend-server"
