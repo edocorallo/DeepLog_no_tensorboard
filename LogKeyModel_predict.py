@@ -38,14 +38,14 @@ device = torch.device("cpu")
 def generate(name):
     # If you what to replicate the DeepLog paper results(Actually, I have a better result than DeepLog paper results),
     # you should use the 'list' not 'set' to obtain the full dataset, I use 'set' just for test and acceleration.
-    hdfs = set()
-    # hdfs = []
+    #hdfs = set()
+    hdfs = []
     with open('data/' + name, 'r') as f:
         for ln in f.readlines():
             ln = list(map(lambda n: n - 1, map(int, ln.strip().split())))
             ln = ln + [-1] * (window_size + 1 - len(ln))
-            hdfs.add(tuple(ln))
-            # hdfs.append(tuple(ln))
+            #hdfs.add(tuple(ln))
+            hdfs.append(tuple(ln))
     print('Number of sessions({}): {}'.format(name, len(hdfs)))
     return hdfs
 
