@@ -1,3 +1,7 @@
+import argparse
+parser=argparse.ArgumentParser(prog='dataView')
+parser.add_argument("log_file",type=str,help="Name of the file you want to view.")
+args=parser.parse_args()
 # This is just a data viewing to see there are how many templates, training data and so on.
 if __name__ == '__main__':
     hdfs_train = []
@@ -6,7 +10,7 @@ if __name__ == '__main__':
     h1 = set()
     h2 = set()
     h3 = set()
-    with open('data/hdfs_train', 'r') as f:
+    with open('data/{}_train'.format(args.log_file), 'r') as f:
         for line in f.readlines():
             line = tuple(map(lambda n: n - 1, map(int, line.strip().split())))
             hdfs_train.append(line)
@@ -14,7 +18,7 @@ if __name__ == '__main__':
         for c in line:
             h1.add(c)
 
-    with open('data/hdfs_test_normal', 'r') as f:
+    with open('data/{}_test_normal'.format(args.log_file), 'r') as f:
         for line in f.readlines():
             line = tuple(map(lambda n: n - 1, map(int, line.strip().split())))
             hdfs_test_normal.append(line)
@@ -22,7 +26,7 @@ if __name__ == '__main__':
         for c in line:
             h2.add(c)
 
-    with open('data/hdfs_test_abnormal', 'r') as f:
+    with open('data/{}_test_abnormal'.format(args.log_file), 'r') as f:
         for line in f.readlines():
             line = tuple(map(lambda n: n - 1, map(int, line.strip().split())))
             hdfs_test_abnormal.append(line)
