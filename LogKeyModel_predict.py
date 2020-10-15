@@ -2,13 +2,6 @@ import torch
 import torch.nn as nn
 import time
 import argparse
-import importlib
-importlib.import_module('drain3')
-import configparser
-
-
-from drain3 import TemplateMiner
-from drain3.file_persistence import FilePersistence
 
 parser = argparse.ArgumentParser()
 group=parser.add_mutually_exclusive_group()
@@ -23,13 +16,6 @@ if args.backend:
         log_type="backend-server"
 else:
         log_type="frontend-server"
-persistence_type = "FILE"
-
-config = configparser.ConfigParser()
-config.read('drain3.ini')
-
-persistence = FilePersistence("../drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
-template_miner = TemplateMiner(persistence)
 
 # Device configuration
 device = torch.device("cpu")
@@ -69,7 +55,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
 
     # Hyperparameters
-    num_classes = len(template_miner.drain.clusters)
+    num_classes = 44
     input_size = 1
     num_layers = args.num_layers
     hidden_size = args.hidden_size
