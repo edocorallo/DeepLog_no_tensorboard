@@ -2,17 +2,10 @@ import time
 import torch
 import torch.nn as nn
 import torch.optim as optim
-#from torch.utils.tensorboard import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import TensorDataset, DataLoader
 import argparse
 import os
-
-import importlib
-importlib.import_module('drain3')
-import configparser
-
-from drain3 import TemplateMiner
-from drain3.file_persistence import FilePersistence
 
 parser = argparse.ArgumentParser()
 group=parser.add_mutually_exclusive_group()
@@ -26,13 +19,6 @@ if args.backend:
         log_type="backend-server"
 else:
         log_type="frontend-server"
-persistence_type = "FILE"
-
-config = configparser.ConfigParser()
-config.read('drain3.ini')
-
-persistence = FilePersistence("../drain3/parser/results/{}/drain3_state[{}].bin".format(log_type,log_type))
-template_miner = TemplateMiner(persistence)
 
 # Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -74,7 +60,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
 
     # Hyperparameters
-    num_classes = len(template_miner.drain.clusters)
+    num_classes = 44
     print("num_classes :  ",num_classes)
     num_epochs = 300
     batch_size = 2048
@@ -89,7 +75,7 @@ if __name__ == '__main__':
     model = Model(input_size, hidden_size, num_layers, num_classes).to(device)
     seq_dataset = generate('{}_train'.format(log_file))
     dataloader = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, pin_memory=True)
-    #writer = SummaryWriter(log_dir='log/' + log)
+    writer = SummaryWriter(log_dir='log/' + log)
     writer=open('writer.txt','w')
 
     # Loss and optimizer
@@ -112,9 +98,9 @@ if __name__ == '__main__':
             loss.backward()
             train_loss += loss.item()
             optimizer.step()
-            #writer.add_graph(model, seq)
+            writer.add_graph(model, seq)
         print('Epoch [{}/{}], train_loss: {:.4f}'.format(epoch + 1, num_epochs, train_loss / total_step))
-        #writer.add_scalar('train_loss', train_loss / total_step, epoch + 1)
+        writer.add_scalar('train_loss', train_loss / total_step, epoch + 1)
         print(train_loss / total_step, file=writer)
     elapsed_time = time.time() - start_time
     print('elapsed_time: {:.3f}s'.format(elapsed_time))
