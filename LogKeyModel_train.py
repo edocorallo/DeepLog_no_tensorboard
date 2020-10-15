@@ -76,7 +76,7 @@ if __name__ == '__main__':
     seq_dataset = generate('{}_train'.format(log_file))
     dataloader = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, pin_memory=True)
     writer = SummaryWriter(log_dir='log/' + log)
-    writer=open('writer.txt','w')
+    #writer=open('writer.txt','w')
 
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
@@ -101,7 +101,7 @@ if __name__ == '__main__':
             writer.add_graph(model, seq)
         print('Epoch [{}/{}], train_loss: {:.4f}'.format(epoch + 1, num_epochs, train_loss / total_step))
         writer.add_scalar('train_loss', train_loss / total_step, epoch + 1)
-        print(train_loss / total_step, file=writer)
+        #print(train_loss / total_step, file=writer)
     elapsed_time = time.time() - start_time
     print('elapsed_time: {:.3f}s'.format(elapsed_time))
     if not os.path.isdir(model_dir):
