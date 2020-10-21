@@ -67,7 +67,8 @@ class Model(nn.Module):
 
 
 if __name__ == '__main__':
-
+        
+    log_file=args.log_file
     # Hyperparameters
     num_classes = num_classes('{}_train'.format(log_file))
     print("num_classes :  ",num_classes)
