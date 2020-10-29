@@ -22,7 +22,15 @@ else:
 
 # Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+def num_classes(name):
+    uniq=[]
+    with open('data/' + name, 'r') as file:
+        for line in file:
+                line=line.strip().split()
+                for char in line:
+                        if char!=0 and char not in uniq:
+                                uniq.append(char)
+    return len(uniq)
 
 def generate(name):
     num_sessions = 0
@@ -61,7 +69,7 @@ if __name__ == '__main__':
         
     log_file=args.log_file
     # Hyperparameters
-    num_classes = 38
+    num_classes = num_classes('{}_train'.format(log_file))
     print("num_classes :  ",num_classes)
     num_epochs = 300
     batch_size = 2048
