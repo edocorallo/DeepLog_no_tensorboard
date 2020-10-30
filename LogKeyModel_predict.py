@@ -55,7 +55,7 @@ class Model(nn.Module):
 if __name__ == '__main__':
 
     # Hyperparameters
-    num_classes = 44
+    num_classes = 58
     input_size = 1
     num_layers = args.num_layers
     hidden_size = args.hidden_size
