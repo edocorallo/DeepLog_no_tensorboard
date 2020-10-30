@@ -69,7 +69,7 @@ if __name__ == '__main__':
         
     log_file=args.log_file
     # Hyperparameters
-    num_classes = num_classes('{}_train'.format(log_file))
+    num_classes = 58
     print("num_classes :  ",num_classes)
     num_epochs = 300
     batch_size = 2048
